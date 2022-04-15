@@ -1,0 +1,7 @@
+{
+  "name": "kataba-qr",
+  "version": "0.0.1",
+  "description": "Catawba QR Code Generator",
+  "main": "index.js",
+  "license": "MIT"
+}
