@@ -7,7 +7,6 @@ const Download = ({ data }) => {
       download='kataba-qr.png'
       href={data == null ? '' : data}
       style={{
-        border: '1px solid rgba(0, 0, 0, 0.5)',
         width: '100%',
         borderRadius: '10px',
         height: '50px',
@@ -16,7 +15,12 @@ const Download = ({ data }) => {
         color: 'black',
         fontSize: '2em',
         textDecoration: 'none',
-        // backgroundColor: 'blue',
+        position: 'relative',
+        top: '-100px',
+        backgroundColor: '#f4b860',
+        fontFamily: 'Syne Mono',
+        letterSpacing: '25px',
+        boxShadow: '3px 3px 5px #333',
       }}
     >
       DOWNLOAD

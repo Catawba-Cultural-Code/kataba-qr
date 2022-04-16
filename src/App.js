@@ -55,12 +55,13 @@ const App = () => {
         height: '100vh',
       }}
     >
-      <Header>Catawba Cultural QR Utility</Header>
+      <Header href={href}>Catawba Cultural Qr Utility</Header>
       <div
         style={{
-          gridRow: '2 / 3',
-          display: 'grid',
-          gridTemplateColumns: '3fr 2fr',
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
         }}
       >
         <div
@@ -70,15 +71,24 @@ const App = () => {
             alignItems: 'center',
           }}
         >
-          <Canvas ref={canvasRef} size={size} />
+          <Canvas ref={canvasRef} size={size} isInverted={isInverted} />
           <Download data={data} />
         </div>
-        <div style={{ borderWidth: '50px' }}>
+        <div
+          style={{
+            borderWidth: '50px',
+            boxShadow: '3px 3px 5px #333',
+            margin: '20px',
+            marginHorizontal: '50px',
+            padding: '20px',
+            borderRadius: '30px',
+            backgroundColor: 'white',
+          }}
+        >
           <URLInput href={href} setHref={setHref} />
-          <h2>O P T I O N S</h2>
+          <h2 style={{ fontFamily: 'Major Mono Display' }}>options</h2>
 
           <SizeInput size={size} setSize={setSize} />
-          <InvertInput isInverted={isInverted} setIsInverted={setIsInverted} />
           <ImagePicker
             ref={imgRef}
             setLoaded={setImgLoaded}
@@ -86,6 +96,7 @@ const App = () => {
             current={current}
             setCurrent={setCurrent}
           />
+          <InvertInput isInverted={isInverted} setIsInverted={setIsInverted} />
         </div>
       </div>
     </div>
