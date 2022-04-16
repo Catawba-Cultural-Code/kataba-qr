@@ -1,22 +1,23 @@
 import React, { useRef, useState } from 'react'
 import QRCode from 'qrcode'
-import logo from './logo.png'
+import Header from './Header'
+import Canvas from './Canvas'
+import Download from './Download'
+import URLInput from './URLInput'
+import SizeInput from './SizeInput'
+import InvertInput from './InvertInput'
+import ImagePicker from './ImagePicker'
+import logos from './logos'
 const App = () => {
   const canvasRef = useRef()
   const imgRef = useRef()
   const [imgLoaded, setImgLoaded] = useState(false)
   const [size, setSize] = useState(500)
   const [isInverted, setIsInverted] = useState(false)
+  const [current, setCurrent] = useState(0)
   const [data, setData] = useState(null)
   // TODO: add data validation
   const [href, setHref] = useState('http://catawbaculture.org')
-
-  React.useEffect(() => {
-    imgRef.current.onload = () => {
-      console.log('image loaded')
-      setImgLoaded(true)
-    }
-  }, [])
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -33,17 +34,17 @@ const App = () => {
       },
       function(error) {
         if (error) console.error(error)
-        console.log('updated!')
         if (imgLoaded) {
           const ctx = canvas.getContext('2d')
           const logoSize = size / 3.75
           const mid = size / 2 - logoSize / 2
           ctx.drawImage(imgRef.current, mid, mid, logoSize, logoSize)
           setData(canvas.toDataURL())
+          console.log('updated!')
         }
       }
     )
-  }, [isInverted, size, href, imgLoaded])
+  }, [isInverted, size, href, imgLoaded, current])
   return (
     <div
       style={{
@@ -54,19 +55,7 @@ const App = () => {
         height: '100vh',
       }}
     >
-      <h1
-        style={{
-          backgroundColor: 'black',
-          textAlign: 'center',
-          color: 'white',
-          gridRow: '1 / 2',
-          display: 'grid',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        Catawba QR Utility
-      </h1>
+      <Header>Catawba Cultural QR Utility</Header>
       <div
         style={{
           gridRow: '2 / 3',
@@ -81,62 +70,22 @@ const App = () => {
             alignItems: 'center',
           }}
         >
-          <canvas
-            ref={canvasRef}
-            style={{ width: size, height: size }}
-          ></canvas>
-          <a
-            id='download'
-            download='kataba-qr.png'
-            href={data == null ? '' : data}
-            style={{
-              border: '1px solid rgba(0, 0, 0, 0.5)',
-              width: '100%',
-              borderRadius: '10px',
-              height: '50px',
-              display: 'grid',
-              placeItems: 'center',
-              color: 'black',
-              fontSize: '2em',
-              textDecoration: 'none',
-              // backgroundColor: 'blue',
-            }}
-          >
-            DOWNLOAD
-          </a>
+          <Canvas ref={canvasRef} size={size} />
+          <Download data={data} />
         </div>
-        <div style={{ backgroundColor: 'red', borderWidth: '50px' }}>
-          <div>
-            <h3>URL</h3>
-            <input
-              type='text'
-              value={href}
-              onChange={(e) => setHref(e.target.value)}
-            ></input>
-          </div>
+        <div style={{ borderWidth: '50px' }}>
+          <URLInput href={href} setHref={setHref} />
           <h2>O P T I O N S</h2>
 
-          <div>
-            <h3>Size</h3>
-            <input
-              type='text'
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
-            ></input>
-          </div>
-          <div>
-            <h3>Invert</h3>
-            <input
-              type='checkbox'
-              value={isInverted}
-              onChange={() => {
-                setIsInverted((val) => !val)
-              }}
-            ></input>
-          </div>
-          <div>
-            <img ref={imgRef} src={logo} />
-          </div>
+          <SizeInput size={size} setSize={setSize} />
+          <InvertInput isInverted={isInverted} setIsInverted={setIsInverted} />
+          <ImagePicker
+            ref={imgRef}
+            setLoaded={setImgLoaded}
+            logos={logos}
+            current={current}
+            setCurrent={setCurrent}
+          />
         </div>
       </div>
     </div>
